@@ -91,6 +91,9 @@ const EnhancedTable: FC<IEnhancedTable> = ({
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [dense, setDense] = React.useState(false);
 
+
+  console.log('hereee', rows, headCells);
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: any
@@ -152,12 +155,10 @@ const EnhancedTable: FC<IEnhancedTable> = ({
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rows, rowsPerPage]
+      stableSort(rows, getComparator(order, orderBy)),
+    [order, orderBy, rows]
   );
+
 
   return (
     <Box

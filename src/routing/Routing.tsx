@@ -9,8 +9,10 @@ const Login = lazy(() => import("../pages/login/index"));
 const Signup = lazy(() => import("../pages/signup/index"));
 const Users = lazy(() => import("../pages/users/index"));
 const Benefits = lazy(() => import("../pages/benefits/index"));
+const Coupons = lazy(() => import("../pages/coupons/index"));
 const WebHistory = lazy(() => import("../pages/webHistory/index"));
 const NotFound = lazy(() => import("../pages/NotFound/index"));
+
 
 const Routing = () => {
   const guestRouting: Array<RouteType> = [
@@ -21,6 +23,7 @@ const Routing = () => {
   const authRouting: Array<RouteType> = [
     { path: "/users", element: <Users /> },
     { path: "/benefits", element: <Benefits /> },
+    { path: "/coupons", element: <Coupons /> },
     { path: "/web-history", element: <WebHistory /> },
   ];
 
