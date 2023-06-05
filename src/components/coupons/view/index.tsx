@@ -1,46 +1,65 @@
 import { FC, useState } from "react";
 import BaseLoadingButton from "../../atoms/buttons/BaseLoadingButton";
 import ActionsRenderer from "../renderer";
-import Loading from "../../atoms/loading/Loading";
 import { useGetBrands, useGetCoupons } from "../../../hooks/useCoupons";
-import EnhancedTable from "../../templates/enhancedTable/EnhancedTable";
 import BaseSearch from "../../molecules/search/Search";
-import "./style.scss";  
+import "./style.scss";
 import { COUPONS_LIMIT } from "../../../pages/coupons/constants";
+import CustomDataGrid from "../../organisms/CustomDataGrid";
+
 
 interface ICouponsView {
   view: any;
-}   
+}
 
 const CouponsView: FC<ICouponsView> = ({ view }) => {
-  const [page, setPage] = useState(0);
   const [offset, setOffSet] = useState(0);
-  const [limit, setLimit] = useState(COUPONS_LIMIT);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: COUPONS_LIMIT,
+  });
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
-    setOffSet(page * limit);
-  }
+  const [sortModel, setSortModel] = useState({
+    field: "name",
+    sort: "desc",
+  });
 
-  const handleLimitChange = (count: number) => {
-    setLimit(count);
-  }
+  const handlePageChange = (model: any) => {
+    setPaginationModel(model);
+    setOffSet(model.page * model.pageSize);
+  };
 
-  const handleRefetch = () => {
-    refetchCoupons() || refetchBrands();
-    setPage(0);
-    setOffSet(0);
+  const handleSearch = (query: string) => {
+    setSearch(query);
+  };
+
+  const handleSortChange = (ev: any) => {
+    if (!ev || !ev.length) {
+      setSortModel({
+        field: "name",
+        sort: "desc",
+      })
+    } else {
+      setSortModel(ev[0]);
+    }
+   
   };
 
 
-  const handleSearch = () => {};
 
+
+  const handleRefetch = () => {
+    refetchCoupons() || refetchBrands();
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      page: 0,
+    }));
+    setOffSet(0);
+  };
 
   const createModalOpen = () => {};
-
-
 
   const {
     data: couponData,
@@ -49,8 +68,10 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     refetch: refetchCoupons,
   } = useGetCoupons({
     offset,
-    limit,
+    size: paginationModel.pageSize,
     search,
+    sort: sortModel.field,
+    dir: sortModel.sort,
     enabled: view.title === "coupon",
   });
 
@@ -61,8 +82,10 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     refetch: refetchBrands,
   } = useGetBrands({
     offset,
-    limit,
+    size: paginationModel.pageSize,
     search,
+    sort: sortModel.field,
+    dir: sortModel.sort,
     enabled: view.title === "brands",
   });
 
@@ -71,20 +94,16 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
   const error = couponError || brandError;
 
 
+  console.log('dataaaa', data);
 
   const renderFunction = (tableRow: any) => (
     <ActionsRenderer
-      headCells={view.fields.dashboard}
+      columns={view.fields.dashboard}
       row={tableRow}
       title={view.title}
       onRefreshCB={handleRefetch}
     />
   );
-
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   if (error) {
     return <div>{error.message}</div>;
@@ -93,7 +112,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
   return (
     <>
       <div className="coupons--header">
-        <BaseSearch onHandleSearch={handleSearch} />
+        {!!data?.count && <BaseSearch onHandleSearch={handleSearch} />}
 
         <BaseLoadingButton
           name={`Create ${view.title}`}
@@ -103,15 +122,15 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
       </div>
 
       {!!data?.count && (
-        <EnhancedTable
+        <CustomDataGrid
           rows={data[view.name]}
-          headCells={view.fields.dashboard}
-          renderFunction={renderFunction}
-          allCount={data.count}
-          page={page} 
-          setPage={handlePageChange}
-          rowsPerPage={data.coupons.length - 1}
-          setRowsPerPage={handleLimitChange}
+          columns={view.fields.dashboard}
+          rowCount={data.count}
+          paginationModel={paginationModel}
+          handlePageChange={handlePageChange}
+          handleSortChange={handleSortChange}
+          isLoading={isLoading}
+          // renderFunction={renderFunction}
         />
       )}
     </>

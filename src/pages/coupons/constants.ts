@@ -3,37 +3,11 @@ export const brandView = {
   name: "brands",
   fields: {
     dashboard: [
-      {
-        id: "sponsor",
-        label: "Sponsor",
-        disablePadding: false,
-        numeric: false,
-      },
-      {
-        id: "targetUrl",
-        label: "Target URL",
-        disablePadding: false,
-        numeric: false,
-      },
-      {
-        id: "triggerUrls",
-        label: "Trigger URLs",
-        disablePadding: false,
-        numeric: false,
-      },
-
-      {
-        id: "logo",
-        label: "Sponsor Logo",
-        disablePadding: false,
-        numeric: false,
-      },
-      {
-        id: "action",
-        numeric: true,
-        disablePadding: false,
-        label: "Action",
-      },
+      { field: "sponsor", headerName: "Sponsor", width: 150},
+      { field: "targetUrl", headerName: "Target URL", width: 150},
+      { field: "triggerUrls", headerName: "Trigger URLs", width: 150},
+      { field: "logo", headerName: "Sponsor Logo", width: 150},
+      { field: "action", headerName: "Action", width: 150, sortable: false},
     ],
 
     form: [
@@ -76,35 +50,15 @@ export const couponView = {
   name: "coupons",
   fields: {
     dashboard: [
-      {
-        id: "sponsor",
-        label: "Sponsor",
-        disablePadding: false,
-        numeric: false,
-      },
-      {
-        id: "couponCode",
-        label: "Coupon Code",
-        disablePadding: false,
-        numeric: false,
-      },
-      {
-        id: "dealText",
-        label: "Text",
-        disablePadding: false,
-        numeric: false,
-      },
-      {
-        id: "action",
-        numeric: true,
-        disablePadding: false,
-        label: "Action",
-      },
+      { field: "name", headerName: "Sponsor", sortable: false, flex: 1,},
+      { field: "couponCode", headerName: "Coupon Code", sortable: false,  flex: 1,},
+      { field: "dealText", headerName: "Text", sortable: false, flex: 1,},
+      { field: "action", headerName: "Action",  sortable: false, flex: 1,},
     ],
 
     form: [
       {
-        name: "sponsor",
+        name: "name",
         placeholder: "Deal Sponsor",
         input: "select",
         required: true,

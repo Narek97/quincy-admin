@@ -1,29 +1,41 @@
 import { request } from "../utils/axios-rq";
 import { useMutation, useQuery } from "react-query";
 
-const getCouponsRequest = ({ limit = 10, offset = 0, search = "" }) => {
+const getCouponsRequest = ({
+  size = 10,
+  offset = 0,
+  search = "",
+  sort = "",
+  dir = "asc",
+}) => {
   return request({
-    url: `coupon/?size=${limit}&offset=${offset}&q=${search}`,
+    url: `coupon/`,
     method: "get",
+    params: { size, offset, search, sort, dir: dir.toUpperCase() },
   });
 };
 
-const getBrandsRequest = ({ limit = 10, offset = 0, search = "" }) => {
+const getBrandsRequest = ({
+  size = 10,
+  offset = 0,
+  search = "",
+  sort = "",
+  dir = "asc",
+}) => {
   return request({
-    url: `brand/?size=${limit}&offset=${offset}&q=${search}`,
+    url: `brand/`,
     method: "get",
+    params: { size, offset, search, sort, dir: dir.toUpperCase()  },
   });
 };
 
-export const deleteCouponRequest = (id : string)=> {
+export const deleteCouponRequest = (id: string) => {
   return request({ url: `coupon/${id}`, method: "delete" });
-}
+};
 
-
-export const deleteBrandRequest = (id : string)=> {
+export const deleteBrandRequest = (id: string) => {
   return request({ url: `brand/${id}`, method: "delete" });
-}
-
+};
 
 export const useDeleteCoupon = (
   onSuccess: (data: any) => void,
@@ -35,7 +47,6 @@ export const useDeleteCoupon = (
   });
 };
 
-
 export const useDeleteBrand = (
   onSuccess: (data: any) => void,
   onError: (error: Error) => void
@@ -46,18 +57,18 @@ export const useDeleteBrand = (
   });
 };
 
-
-
 export const useGetCoupons = (data: {
-  limit: number;
+  size: number;
   offset: number;
   search: string;
   enabled: boolean;
+  sort: string;
+  dir: string;
 }) => {
-  const { limit, offset, search, enabled } = data;
+  const { size, offset, search, enabled, sort, dir } = data;
   return useQuery<any, Error>(
-    ["getCoupons",limit, offset, search, enabled],
-    () => getCouponsRequest({ limit, offset, search }),
+    ["getCoupons", size, offset, search, enabled, sort, dir],
+    () => getCouponsRequest({ size, offset, search, sort, dir }),
     {
       retry: 0,
       enabled,
@@ -67,20 +78,21 @@ export const useGetCoupons = (data: {
 };
 
 export const useGetBrands = (data: {
-  limit: number;
+  size: number;
   offset: number;
   search: string;
   enabled: boolean;
+  sort: string;
+  dir: string;
 }) => {
-  const { limit, offset, search, enabled } = data;
+  const { size, offset, search, enabled, sort, dir } = data;
   return useQuery<any, Error>(
-    ["getBrands", limit, offset, search, enabled],
-    () => getBrandsRequest({ limit, offset, search }),
+    ["getBrands", size, offset, search, enabled, sort, dir],
+    () => getBrandsRequest({ size, offset, search, sort, dir }),
     {
       retry: 0,
       enabled,
       refetchOnWindowFocus: false,
-
     }
   );
 };

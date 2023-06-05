@@ -2,7 +2,7 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import TabPanel from "../../components/molecules/tabPanel";
 import { couponsTabViewMap, couponsTabs } from "./constants";
-import TabStrip from "../../components/organisms/TabStrip";
+import TabStrip from "../../components/organisms/tab-strip";
 import CouponsView from "../../components/coupons/view";
 
 export default function Coupons() {

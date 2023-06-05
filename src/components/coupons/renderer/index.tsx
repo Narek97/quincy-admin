@@ -9,13 +9,13 @@ import DeleteModal from "../../templates/deleteModal/DeleteModal";
 
 interface ICouponsRenderer {
   row:any;
-  headCells:any;
+  columns:any;
   title:any;
   onRefreshCB:any;
 
 }
 
-const CouponsRenderer: FC<ICouponsRenderer>= ({ row, headCells, title, onRefreshCB }) => {
+const CouponsRenderer: FC<ICouponsRenderer>= ({ row, columns, title, onRefreshCB }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 
@@ -48,7 +48,7 @@ const CouponsRenderer: FC<ICouponsRenderer>= ({ row, headCells, title, onRefresh
 
   return (
     <>
-      {headCells.map((column: { id: string; }, index: Key | null | undefined) =>
+      {columns.map((column: { id: string; }, index: Key | null | undefined) =>
         column.id !== "action" ? (
           (
             <TableCell
