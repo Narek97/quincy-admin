@@ -92,7 +92,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
 
   return (
     <>
-      <div className={"coupons--header"}>
+      <div className="coupons--header">
         <BaseSearch onHandleSearch={handleSearch} />
 
         <BaseLoadingButton
@@ -110,7 +110,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
           allCount={data.count}
           page={page} 
           setPage={handlePageChange}
-          rowsPerPage={limit}
+          rowsPerPage={data.coupons.length - 1}
           setRowsPerPage={handleLimitChange}
         />
       )}

@@ -92,8 +92,6 @@ const EnhancedTable: FC<IEnhancedTable> = ({
   const [dense, setDense] = React.useState(false);
 
 
-  console.log('hereee', rows, headCells);
-
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: any
