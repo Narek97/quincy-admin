@@ -1,0 +1,7 @@
+@import "src/assets/styles/mixins";
+@import "src/assets/styles/variables";
+
+.error-message {
+  font-size: 12px;
+  color: $BASE_ERROR_COLOR;
+}

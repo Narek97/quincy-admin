@@ -1,0 +1,9 @@
+@import "src/assets/styles/mixins";
+@import "src/assets/styles/variables";
+
+.benefits {
+  &--header {
+    @include flex-center-between;
+    align-items: center;
+  }
+}

@@ -1,0 +1,27 @@
+@import "src/assets/styles/mixins";
+@import "src/assets/styles/variables";
+
+
+.benefit-form-template {
+  @include absolute-center;
+  width: 420px;
+  padding: 20px;
+  background-color: $BASE_WHITE_COLOR;
+
+  &--form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &--title {
+    font-size: 24px;
+  }
+
+
+  &--footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+}

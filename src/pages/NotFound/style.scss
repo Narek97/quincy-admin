@@ -1,0 +1,7 @@
+@import "src/assets/styles/mixins";
+@import "src/assets/styles/variables";
+
+.not-found-page{
+  font-size: 24px;
+  @include absolute-center
+}
