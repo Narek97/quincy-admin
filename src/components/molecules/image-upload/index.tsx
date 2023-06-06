@@ -1,14 +1,15 @@
 import { FC, useState } from "react";
 import "./style.scss";
+import ErrorMessage from "../../atoms/errorMessage/ErrorMessage";
 
 
 interface IImageUpload{
   onChangeCB: (...event: unknown[]) => void;
-  value: any;
   imgUrl?: string;
+  message: string;
 }
 
-const ImageUpload: FC<IImageUpload> = ({ onChangeCB, value, imgUrl }) => {
+const ImageUpload: FC<IImageUpload> = ({ onChangeCB, imgUrl, message }) => {
   const [imagePreview, setImagePreview] = useState(imgUrl);
 
   const handleChange = (event: any) => {
@@ -40,6 +41,7 @@ const ImageUpload: FC<IImageUpload> = ({ onChangeCB, value, imgUrl }) => {
           onChange={handleChange}
         />
       </div>
+      <ErrorMessage message={message} />
     </>
   );
 };

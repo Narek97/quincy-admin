@@ -3,6 +3,8 @@ import { useCreateItem, useUpdateItem } from "../../../../hooks/useCoupons";
 import { useForm } from "react-hook-form";
 import FormContentRenderer from "../../../molecules/form-content-renderer";
 import { IBrand, IFormField } from "../../../../ts/interface";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createSponsorSchema, editSponsorSchema } from "./constants";
 
 interface IBrandFormRenderer {
   fields: IFormField[];
@@ -20,8 +22,6 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
   onRefresh,
 }) => {
   const isEdit = !!data;
-  console.log('dataaa', data);
-
 
   const sponsorDefaultValues = {
     name: data?.name || "",
@@ -36,18 +36,20 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
     onRefresh();
   };
 
-  const { mutate: createMutate, isLoading: createIsLoading } = useCreateItem(onSuccess);
-  const { mutate: editMutate, isLoading: editIsLoading } = useUpdateItem(onSuccess);
+  const { mutate: createMutate, isLoading: createIsLoading } =
+    useCreateItem(onSuccess);
+  const { mutate: editMutate, isLoading: editIsLoading } =
+    useUpdateItem(onSuccess);
 
   const isLoading = createIsLoading || editIsLoading;
-
-
 
   const state = useForm({
     mode: "onSubmit",
     defaultValues: sponsorDefaultValues,
-    // resolver: yupResolver(createServiceSchema),
-  });  
+    resolver: !isEdit
+      ? yupResolver(createSponsorSchema)
+      : yupResolver(editSponsorSchema),
+  });
 
   const {
     handleSubmit,
@@ -65,11 +67,10 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
       }
     }
     if (isEdit) {
-      editMutate({ data: formData, title, id: data.id })
+      editMutate({ data: formData, title, id: data.id });
     } else {
       createMutate({ data: formData, title });
     }
-    
   };
 
   return (
@@ -88,4 +89,3 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
 };
 
 export default SponsorFormRenderer;
-

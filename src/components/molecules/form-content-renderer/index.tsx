@@ -1,4 +1,9 @@
-import { Control, Controller, FieldErrors, UseFormHandleSubmit } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormHandleSubmit,
+} from "react-hook-form";
 import BaseButton from "../../atoms/buttons/BaseButton";
 import BaseLoadingButton from "../../atoms/buttons/BaseLoadingButton";
 import FormInputError from "../formInputError/FormInputError";
@@ -11,10 +16,10 @@ import { IFormField } from "../../../ts/interface";
 interface IFormContentRenderer {
   onSubmit: (data: unknown) => void;
   fields: IFormField[];
-  control:  Control<any, unknown>;
+  control: Control<any, unknown>;
   errors: FieldErrors<any>;
   isEdit: boolean;
-  onClose: ()=> {};
+  onClose: () => {};
   handleSubmit: UseFormHandleSubmit<any, undefined>;
   isLoading: boolean;
   imgUrl?: string;
@@ -29,7 +34,7 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
   onClose,
   handleSubmit,
   isLoading,
-  imgUrl
+  imgUrl,
 }) => {
   return (
     <div>
@@ -38,9 +43,10 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
         {fields.map((field, id) => (
           <Controller
             key={field.name}
-            name={field.name }
+            name={field.name}
             control={control}
             render={({ field: { onChange, value } }) => {
+              console.log(field.name);
               if (field.input === "text" && !field.multiChoice) {
                 return (
                   <FormInputError
@@ -48,7 +54,10 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
                     value={value}
                     element={field}
                     placeholder={field.placeholder}
-                    message=""
+                    message={
+                      (errors?.[field.name]?.message as string | undefined) ||
+                      ""
+                    }
                   />
                 );
               }
@@ -58,11 +67,24 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
                     onChange={onChange}
                     value={value}
                     placeholder={field.placeholder}
+                    message={
+                      (errors?.[field.name]?.message as string | undefined) ||
+                      ""
+                    }
                   />
                 );
               }
               if (field.input === "image") {
-                return <ImageUpload onChangeCB={onChange} value={value} imgUrl ={imgUrl}/>;
+                return (
+                  <ImageUpload
+                    onChangeCB={onChange}
+                    imgUrl={imgUrl}
+                    message={
+                      (errors?.[field.name]?.message as string | undefined) ||
+                      ""
+                    }
+                  />
+                );
               }
               return <></>;
             }}
