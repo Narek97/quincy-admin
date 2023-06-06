@@ -2,6 +2,11 @@ import { FC } from "react";
 import CouponFormRenderer from "../../components/coupons/form/coupon";
 import SponsorFormRenderer from "../../components/coupons/form/sponsor";
 import { IView } from "../../ts/interface";
+import { GridCellParams } from "@mui/x-data-grid";
+import {
+  ActionsRenderer,
+  ImageRenderer,
+} from "../../components/coupons/renderer";
 
 export const brandView: IView = {
   title: "brand",
@@ -21,8 +26,19 @@ export const brandView: IView = {
         flex: 1,
         sortable: false,
       },
-      { field: "logo", headerName: "Sponsor Logo", flex: 1, sortable: false },
-      { field: "action", headerName: "Action", flex: 1, sortable: false },
+      {
+        field: "logo",
+        headerName: "Sponsor Logo",
+        flex: 1,
+        sortable: false,
+        renderCell: ImageRenderer,
+      },
+      {
+        field: "action",
+        headerName: "Action",
+        flex: 1,
+        sortable: false,
+      },
     ],
 
     form: [

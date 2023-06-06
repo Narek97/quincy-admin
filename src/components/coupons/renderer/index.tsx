@@ -1,27 +1,34 @@
-import TableCell from "@mui/material/TableCell";
 import BaseLoadingButton from "../../atoms/buttons/BaseLoadingButton";
 import BaseButton from "../../atoms/buttons/BaseButton";
-import { FC, Key, useState } from "react";
+import { FC, useState } from "react";
 import BaseModal from "../../atoms/modal/BaseModal";
-import { useDeleteBrand, useDeleteCoupon } from "../../../hooks/useCoupons";
+import { useDeleteItem } from "../../../hooks/useCoupons";
 import DeleteModal from "../../templates/deleteModal/DeleteModal";
+import "./style.scss";
+import { GridCellParams } from "@mui/x-data-grid/models";
 
-
-interface ICouponsRenderer {
-  row:any;
-  columns:any;
-  title:any;
-  onRefreshCB:any;
-
+interface IActionsRenderer {
+  id: string;
+  row: any;
+  handleRefetch: () => void;
+  title: string;
 }
 
-const CouponsRenderer: FC<ICouponsRenderer>= ({ row, columns, title, onRefreshCB }) => {
+export const ImageRenderer = (params: GridCellParams) => {
+  const img = params.row.logo;
+  return <img src={img.low} alt="logo" className="logo" />;
+};
+
+export const ActionsRenderer: FC<IActionsRenderer> = ({
+  id,
+  row,
+  handleRefetch,
+  title,
+}) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-
-  const couponMutation = useDeleteCoupon(()=>{}, ()=>{});
-  const brandMutation = useDeleteBrand(()=>{}, ()=>{});
-
+  const deleteMutation = useDeleteItem(handleRefetch);
 
   const handleDeleteModalOpen = () => {
     setIsDeleteModalOpen(true);
@@ -31,49 +38,35 @@ const CouponsRenderer: FC<ICouponsRenderer>= ({ row, columns, title, onRefreshCB
     setIsDeleteModalOpen(false);
   };
 
-  const handleDelete = async (id: string)=> {
-    try {
-      if (title==='coupon') {
-        await couponMutation.mutateAsync(id);
-      } 
-      if (title==='brand') {
-        await brandMutation.mutateAsync(id);
-      }  
-      setIsDeleteModalOpen(false);
-      onRefreshCB && onRefreshCB()
-    } catch (error) {
-     console.error(error)
-    }
-  }
+  const handleEditModalOpen = () => {
+    setIsEditModalOpen(true);
+  };
 
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const handleDelete = async (id: string, title: string) => {
+    try {
+      await deleteMutation.mutateAsync({ id, title });
+
+      handleDeleteModalClose();
+      // onRefreshCB && onRefreshCB();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
-      {columns.map((column: { id: string; }, index: Key | null | undefined) =>
-        column.id !== "action" ? (
-          (
-            <TableCell
-              key={index}
-              align="left"
-              component="th"
-              scope="row"
-              padding="none"
-            >
-              {row[column.id]}
-            </TableCell>
-          )
-        ) : (
-          <TableCell key={index} align="right" sx={{ display: "flex", gap: "10px  " }}>
-            <BaseLoadingButton
-              name={"Delete"}
-              loading={false}
-              onClick={handleDeleteModalOpen}
-              color="error"
-            />
-            <BaseButton name={"Edit"} />
-          </TableCell>
-        )
-      )}
-
+      <div className="actions-cell">
+        <BaseLoadingButton
+          name="Delete"
+          loading={false}
+          onClick={handleDeleteModalOpen}
+          color="error"
+        />
+        <BaseButton name="Edit" />
+      </div>
       {isDeleteModalOpen && (
         <BaseModal
           open={isDeleteModalOpen}
@@ -82,7 +75,7 @@ const CouponsRenderer: FC<ICouponsRenderer>= ({ row, columns, title, onRefreshCB
           <DeleteModal
             name={title}
             loading={false}
-            onHandleDelete={()=>handleDelete(row.id)}
+            onHandleDelete={() => handleDelete(id, title)}
             onHandleClose={handleDeleteModalClose}
           />
         </BaseModal>
@@ -90,5 +83,3 @@ const CouponsRenderer: FC<ICouponsRenderer>= ({ row, columns, title, onRefreshCB
     </>
   );
 };
-
-export default CouponsRenderer;

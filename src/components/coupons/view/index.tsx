@@ -1,6 +1,5 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import BaseLoadingButton from "../../atoms/buttons/BaseLoadingButton";
-import ActionsRenderer from "../renderer";
 import { useGetList } from "../../../hooks/useCoupons";
 import BaseSearch from "../../molecules/search/Search";
 import "./style.scss";
@@ -9,16 +8,21 @@ import {
   couponsFormRendererMap,
 } from "../../../pages/coupons/constants";
 import CustomDataGrid from "../../organisms/CustomDataGrid";
-import SponsorFormRenderer from "../form/sponsor";
 import BaseModal from "../../atoms/modal/BaseModal";
 import { IView } from "../../../ts/interface";
-import { GridPaginationModel, GridSortItem, GridSortModel } from "@mui/x-data-grid";
+import {
+  GridPaginationModel,
+  GridSortItem,
+  GridSortModel,
+} from "@mui/x-data-grid";
+import { ActionsRenderer, ImageRenderer } from "../renderer";
 
 interface ICouponsView {
   view: IView;
 }
 
 const CouponsView: FC<ICouponsView> = ({ view }) => {
+  const [formFields, setFormFields] = useState(view.fields.dashboard);
   const [offset, setOffSet] = useState(0);
   const [search, setSearch] = useState("");
 
@@ -27,12 +31,36 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     pageSize: COUPONS_LIMIT,
   });
 
-  const [sortModel, setSortModel] =  useState<GridSortItem>({
+  const [sortModel, setSortModel] = useState<GridSortItem>({
     field: "name",
     sort: "desc",
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    setFormFields((prevFields) => {
+      const newFields = prevFields.map((prevField) => {
+        if (prevField.field === "action") {
+          return {
+            ...prevField,
+            renderCell: (params: any) => {
+              return (
+                <ActionsRenderer
+                  id={params.row.id}
+                  row={params.row}
+                  handleRefetch={handleRefetch}
+                  title={view.title}
+                />
+              );
+            },
+          };
+        }
+        return prevField;
+      });
+      return newFields;
+    });
+  }, []);
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handlePageChange = (model: GridPaginationModel) => {
     setPaginationModel(model);
@@ -64,11 +92,11 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
   };
 
   const handleModalOpen = () => {
-    setIsModalOpen(true);
+    setIsCreateModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
+    setIsCreateModalOpen(false);
   };
 
   const { data, error, isLoading, refetch } = useGetList({
@@ -79,15 +107,6 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     dir: sortModel.sort,
     title: view.title,
   });
-
-  const renderFunction = (tableRow: any) => (
-    <ActionsRenderer
-      columns={view.fields.dashboard}
-      row={tableRow}
-      title={view.title}
-      onRefreshCB={handleRefetch}
-    />
-  );
 
   const FormRenderer = couponsFormRendererMap[view.title];
 
@@ -110,7 +129,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
       {!!data?.count && (
         <CustomDataGrid
           rows={data[view.name]}
-          columns={view.fields.dashboard}
+          columns={formFields}
           rowCount={data.count}
           paginationModel={paginationModel}
           handlePageChange={handlePageChange}
@@ -118,10 +137,10 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
           isLoading={isLoading}
         />
       )}
-      {isModalOpen && (
+      {isCreateModalOpen && (
         <BaseModal
           loading={isLoading}
-          open={isModalOpen}
+          open={isCreateModalOpen}
           handleClose={handleModalClose}
         >
           <FormRenderer

@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box/Box';
-import { DataGrid, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 import { FC } from 'react';
-import { IBrandsListResponse, IDashbordField } from '../../../ts/interface';
+import { IBrandsListResponse } from '../../../ts/interface';
 
 
 
 interface ICutomGrid {
-  columns: IDashbordField[];
+  columns: GridColDef[];
   rows: IBrandsListResponse[];
   rowCount:number;
   paginationModel:GridPaginationModel;
@@ -38,6 +38,7 @@ const CustomDataGrid: FC<ICutomGrid> = ({
         onSortModelChange={handleSortChange}
         loading={isLoading}
         disableRowSelectionOnClick
+        rowHeight={50}
       />
     </Box>
   );

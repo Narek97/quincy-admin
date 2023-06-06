@@ -25,37 +25,23 @@ const getListRequest = ({
 };
 
 
-export const deleteCouponRequest = (id: string) => {
-  return request({ url: `coupon/${id}`, method: "delete" });
+export const deleteItemRequest = ({id, title}: {id: string, title: string}) => {
+  return request({ url: `${title}/${id}`, method: "delete" });
 };
 
-export const deleteBrandRequest = (id: string) => {
-  return request({ url: `brand/${id}`, method: "delete" });
-};
 
 export const createItemRequest = ({data, title}: any) => {
   return request({ url: `${title}/`, method: "post", data});
 };
 
-export const useDeleteCoupon = (
-  onSuccess: (data: any) => void,
-  onError: (error: Error) => void
+export const useDeleteItem = (
+  onSuccess: () => void,
 ) => {
-  return useMutation("deleteCoupon", deleteCouponRequest, {
+  return useMutation( deleteItemRequest, {
     onSuccess,
-    onError,
   });
 };
 
-export const useDeleteBrand = (
-  onSuccess: (data: any) => void,
-  onError: (error: Error) => void
-) => {
-  return useMutation("deleteBrand", deleteBrandRequest, {
-    onSuccess,
-    onError,
-  });
-};
 
 export const useGetList = (data: {
   size: number;

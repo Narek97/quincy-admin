@@ -6,6 +6,7 @@ import {
   UserResponseType,
   WebHistoryTableType,
 } from "./types";
+import { GridColDef } from "@mui/x-data-grid/models";
 
 export interface IUserHeadCell {
   disablePadding: boolean;
@@ -67,7 +68,7 @@ export interface IView {
   title: string,
   name: string,
   fields: {
-    dashboard: IDashbordField[],
+    dashboard: GridColDef[],
     form: IFormField[],
   }
 }
