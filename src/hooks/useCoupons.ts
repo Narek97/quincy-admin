@@ -1,33 +1,21 @@
 import { request } from "../utils/axios-rq";
 import { useMutation, useQuery } from "react-query";
 
-const getCouponsRequest = ({
+const getListRequest = ({
   size = 10,
   offset = 0,
   search = "",
   sort = "",
   dir = "asc",
+  title ='',
 }) => {
   return request({
-    url: `coupon/`,
+    url: `${title}/`,
     method: "get",
     params: { size, offset, search, sort, dir: dir.toUpperCase() },
   });
 };
 
-const getBrandsRequest = ({
-  size = 10,
-  offset = 0,
-  search = "",
-  sort = "",
-  dir = "asc",
-}) => {
-  return request({
-    url: `brand/`,
-    method: "get",
-    params: { size, offset, search, sort, dir: dir.toUpperCase()  },
-  });
-};
 
 export const deleteCouponRequest = (id: string) => {
   return request({ url: `coupon/${id}`, method: "delete" });
@@ -35,6 +23,14 @@ export const deleteCouponRequest = (id: string) => {
 
 export const deleteBrandRequest = (id: string) => {
   return request({ url: `brand/${id}`, method: "delete" });
+};
+
+export const createCouponRequest = (data: any) => {
+  return request({ url: `coupon/`, method: "post" });
+};
+
+export const createBrandRequest = (data: any) => {
+  return request({ url: `brand/`, method: "post" });
 };
 
 export const useDeleteCoupon = (
@@ -57,42 +53,34 @@ export const useDeleteBrand = (
   });
 };
 
-export const useGetCoupons = (data: {
+export const useGetList = (data: {
   size: number;
   offset: number;
   search: string;
-  enabled: boolean;
   sort: string;
   dir: string;
+  title: string;
 }) => {
-  const { size, offset, search, enabled, sort, dir } = data;
+  const { size, offset, search, sort, dir, title } = data;
   return useQuery<any, Error>(
-    ["getCoupons", size, offset, search, enabled, sort, dir],
-    () => getCouponsRequest({ size, offset, search, sort, dir }),
+    [`get${title}`, size, offset, search, sort, dir, title],
+    () => getListRequest({ size, offset, search, sort, dir, title }),
     {
       retry: 0,
-      enabled,
       refetchOnWindowFocus: false,
     }
   );
 };
 
-export const useGetBrands = (data: {
-  size: number;
-  offset: number;
-  search: string;
-  enabled: boolean;
-  sort: string;
-  dir: string;
-}) => {
-  const { size, offset, search, enabled, sort, dir } = data;
-  return useQuery<any, Error>(
-    ["getBrands", size, offset, search, enabled, sort, dir],
-    () => getBrandsRequest({ size, offset, search, sort, dir }),
-    {
-      retry: 0,
-      enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+
+export const useCreateCoupon = (onSuccess: (data: any) => void) => {
+  return useMutation(createCouponRequest, {
+    onSuccess,
+  });
+};
+
+export const useCreateBrand = (onSuccess: (data: any) => void) => {
+  return useMutation(createBrandRequest, {
+    onSuccess,
+  });
 };

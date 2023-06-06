@@ -1,11 +1,13 @@
 import { FC, useState } from "react";
 import BaseLoadingButton from "../../atoms/buttons/BaseLoadingButton";
 import ActionsRenderer from "../renderer";
-import { useGetBrands, useGetCoupons } from "../../../hooks/useCoupons";
+import { useGetList } from "../../../hooks/useCoupons";
 import BaseSearch from "../../molecules/search/Search";
 import "./style.scss";
-import { COUPONS_LIMIT } from "../../../pages/coupons/constants";
+import { COUPONS_LIMIT, couponsFormRendererMap } from "../../../pages/coupons/constants";
 import CustomDataGrid from "../../organisms/CustomDataGrid";
+import SponsorFormRenderer from "../form/sponsor";
+import BaseModal from "../../atoms/modal/BaseModal";
 
 
 interface ICouponsView {
@@ -25,6 +27,8 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     field: "name",
     sort: "desc",
   });
+
+  const [isCreatModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handlePageChange = (model: any) => {
     setPaginationModel(model);
@@ -47,11 +51,8 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
    
   };
 
-
-
-
   const handleRefetch = () => {
-    refetchCoupons() || refetchBrands();
+    refetch();
     setPaginationModel((prevModel) => ({
       ...prevModel,
       page: 0,
@@ -59,42 +60,29 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     setOffSet(0);
   };
 
-  const createModalOpen = () => {};
+  const createModalOpen = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  const createModalClose = () => {
+    setIsCreateModalOpen(false);
+  };
 
   const {
-    data: couponData,
-    error: couponError,
-    isLoading: isCouponLoading,
-    refetch: refetchCoupons,
-  } = useGetCoupons({
+    data,
+    error,
+    isLoading,
+    refetch,
+  } = useGetList({
     offset,
     size: paginationModel.pageSize,
     search,
     sort: sortModel.field,
     dir: sortModel.sort,
-    enabled: view.title === "coupon",
+    title: view.title,
   });
 
-  const {
-    data: brandData,
-    error: brandError,
-    isLoading: isBrandLoading,
-    refetch: refetchBrands,
-  } = useGetBrands({
-    offset,
-    size: paginationModel.pageSize,
-    search,
-    sort: sortModel.field,
-    dir: sortModel.sort,
-    enabled: view.title === "brands",
-  });
 
-  const data = couponData || brandData;
-  const isLoading = isCouponLoading || isBrandLoading;
-  const error = couponError || brandError;
-
-
-  console.log('dataaaa', data);
 
   const renderFunction = (tableRow: any) => (
     <ActionsRenderer
@@ -104,6 +92,8 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
       onRefreshCB={handleRefetch}
     />
   );
+
+  const FormRenderer = couponsFormRendererMap[view.title];
 
   if (error) {
     return <div>{error.message}</div>;
@@ -133,6 +123,14 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
           // renderFunction={renderFunction}
         />
       )}
+      {isCreatModalOpen &&  <BaseModal
+          loading={isLoading}
+          open={isCreatModalOpen}
+          handleClose={createModalClose}
+        >
+         <FormRenderer fields={view.fields.form}/>
+        </BaseModal>}
+   
     </>
   );
 };

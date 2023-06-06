@@ -1,6 +1,9 @@
+import CouponFormRenderer from "../../components/coupons/form/coupon";
+import SponsorFormRenderer from "../../components/coupons/form/sponsor";
+
 export const brandView = {
   title: "brand",
-  name: "brands",
+  name: "Brands",
   fields: {
     dashboard: [
       { field: "sponsor", headerName: "Sponsor", width: 150},
@@ -91,3 +94,9 @@ export const couponsTabViewMap = {
 export const couponsTabs = ["coupon", "brand"];
 
 export const COUPONS_LIMIT = 5;
+
+
+export const couponsFormRendererMap = {
+  brand: SponsorFormRenderer,
+  coupon: CouponFormRenderer,
+}
