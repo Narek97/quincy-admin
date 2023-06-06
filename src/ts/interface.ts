@@ -45,3 +45,64 @@ export interface IEnhancedTableProps {
     isShowCheckbox: boolean;
   };
 }
+
+export interface IDashbordField {
+  field: string;
+  headerName: string;
+  flex?: number;
+  sortable?: boolean;
+}
+
+export interface IFormField {
+  name: string,
+  placeholder: string,
+  input: string,
+  required: boolean,
+  multiChoice: boolean,
+  async?: boolean,
+}
+
+
+export interface IView {
+  title: string,
+  name: string,
+  fields: {
+    dashboard: IDashbordField[],
+    form: IFormField[],
+  }
+}
+
+
+export interface ICouponsListResponse {
+  count: number;
+
+}
+
+
+export interface IBrand {
+  id: string;
+  createdAt: string;
+  creatorId: string;
+  host: string;
+  logo: any;
+  name: string;
+  targetUrl: string;
+  targetUrls: string[];
+  updatedAt: string;
+}
+export interface IBrandsListResponse {
+  count: number;
+  brands: IBrand[];
+}
+
+
+export interface IBrandCreate {
+  name: string,
+  targetUrl: string,
+  triggerUrls: string[] | [],
+  deleteAttachment: false,
+  logo: null | File
+}
+
+
+

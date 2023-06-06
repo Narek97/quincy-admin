@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import "./style.scss";
 
-const ImageUpload = ({ onChangeCB, value }) => {
+
+interface IImageUpload{
+  onChangeCB: (...event: unknown[]) => void;
+  value: any;
+}
+
+const ImageUpload: FC<IImageUpload> = ({ onChangeCB, value }) => {
   const [imagePreview, setImagePreview] = useState("");
 
-  const handleChange = (e) => {
-    const file = e.target.files[0];
+  const handleChange = (event: any) => {
+    const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     } else {

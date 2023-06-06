@@ -11,9 +11,11 @@ import {
 import CustomDataGrid from "../../organisms/CustomDataGrid";
 import SponsorFormRenderer from "../form/sponsor";
 import BaseModal from "../../atoms/modal/BaseModal";
+import { IView } from "../../../ts/interface";
+import { GridPaginationModel, GridSortItem, GridSortModel } from "@mui/x-data-grid";
 
 interface ICouponsView {
-  view: any;
+  view: IView;
 }
 
 const CouponsView: FC<ICouponsView> = ({ view }) => {
@@ -25,14 +27,14 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     pageSize: COUPONS_LIMIT,
   });
 
-  const [sortModel, setSortModel] = useState({
+  const [sortModel, setSortModel] =  useState<GridSortItem>({
     field: "name",
     sort: "desc",
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handlePageChange = (model: any) => {
+  const handlePageChange = (model: GridPaginationModel) => {
     setPaginationModel(model);
     setOffSet(model.page * model.pageSize);
   };
@@ -41,14 +43,14 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     setSearch(query);
   };
 
-  const handleSortChange = (ev: any) => {
-    if (!ev || !ev?.length) {
+  const handleSortChange = (model: GridSortModel) => {
+    if (!model || !model?.length) {
       setSortModel({
         field: "name",
         sort: "desc",
       });
     } else {
-      setSortModel(ev[0]);
+      setSortModel(model[0]);
     }
   };
 
@@ -114,7 +116,6 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
           handlePageChange={handlePageChange}
           handleSortChange={handleSortChange}
           isLoading={isLoading}
-          // renderFunction={renderFunction}
         />
       )}
       {isModalOpen && (
@@ -128,6 +129,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
             onClose={handleModalClose}
             onRefresh={handleRefetch}
             title={view.title}
+            data={data[view.title]}
           />
         </BaseModal>
       )}

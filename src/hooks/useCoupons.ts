@@ -1,6 +1,6 @@
-import { title } from "process";
 import { request } from "../utils/axios-rq";
 import { useMutation, useQuery } from "react-query";
+import { GridSortDirection } from "@mui/x-data-grid/models";
 
 const getListRequest = ({
   size = 10,
@@ -9,11 +9,18 @@ const getListRequest = ({
   sort = "",
   dir = "asc",
   title ='',
+}:{
+  size: number,
+  offset: number,
+  search: string,
+  sort: string,
+  dir: GridSortDirection,
+  title: string
 }) => {
   return request({
     url: `${title}/`,
     method: "get",
-    params: { size, offset, search, sort, dir: dir.toUpperCase() },
+    params: { size, offset, search, sort, dir: dir?.toUpperCase() },
   });
 };
 
@@ -55,7 +62,7 @@ export const useGetList = (data: {
   offset: number;
   search: string;
   sort: string;
-  dir: string;
+  dir: GridSortDirection;
   title: string;
 }) => {
   const { size, offset, search, sort, dir, title } = data;

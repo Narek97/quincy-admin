@@ -1,7 +1,9 @@
+import { FC } from "react";
 import CouponFormRenderer from "../../components/coupons/form/coupon";
 import SponsorFormRenderer from "../../components/coupons/form/sponsor";
+import { IView } from "../../ts/interface";
 
-export const brandView = {
+export const brandView: IView = {
   title: "brand",
   name: "brands",
   fields: {
@@ -58,7 +60,7 @@ export const brandView = {
   },
 };
 
-export const couponView = {
+export const couponView: IView = {
   title: "coupon",
   name: "coupons",
   fields: {
@@ -101,7 +103,7 @@ export const couponView = {
   },
 };
 
-export const couponsTabViewMap = {
+export const couponsTabViewMap: Record<string, IView> = {
   brand: brandView,
   coupon: couponView,
 };
@@ -110,7 +112,7 @@ export const couponsTabs = ["coupon", "brand"];
 
 export const COUPONS_LIMIT = 5;
 
-export const couponsFormRendererMap = {
+export const couponsFormRendererMap: Record<string, FC<any>> = {
   brand: SponsorFormRenderer,
   coupon: CouponFormRenderer,
 };

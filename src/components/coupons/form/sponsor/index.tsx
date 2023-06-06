@@ -3,10 +3,11 @@ import { useCreateItem } from "../../../../hooks/useCoupons";
 import { createSponsorDefaultValues } from "./constants";
 import { useForm } from "react-hook-form";
 import FormContentRenderer from "../../../molecules/form-content-renderer";
+import { IBrand, IFormField } from "../../../../ts/interface";
 
 interface IBrandFormRenderer {
-  fields?: any;
-  data?: any;
+  fields: IFormField[];
+  data?: IBrand;
   onClose: ()=> {};
   title: string;
   onRefresh: () => void
@@ -33,16 +34,15 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({ fields, data, onClose, ti
     handleSubmit,
     control,
     formState: { errors },
-    watch,
   } = state;
 
-  const onSubmit = (sponsorData: any) => {
+  const onSubmit = (data: any) => {
     const formData = new FormData();
-    for (const key in sponsorData) {
+    for (const key in data) {
       if (key === 'triggerUrls') {
-        formData.append(key, JSON.stringify(sponsorData[key]));
+        formData.append(key, JSON.stringify(data[key]));
       } else {
-        formData.append(key, sponsorData[key]);
+        formData.append(key, data[key]);
       }
     }
     mutate({data:formData, title});
