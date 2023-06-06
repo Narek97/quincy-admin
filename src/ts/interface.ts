@@ -88,7 +88,7 @@ export interface IBrand {
   logo: any;
   name: string;
   targetUrl: string;
-  targetUrls: string[];
+  triggerUrls: string[];
   updatedAt: string;
 }
 export interface IBrandsListResponse {

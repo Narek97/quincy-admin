@@ -12,6 +12,7 @@ const CustomChipsInput: FC<ICustomChipsInput> = ({
   onChange,
   placeholder,
 }) => {
+  console.log('valueeee', value); 
   return (
     <MuiChipsInput
       value={value}

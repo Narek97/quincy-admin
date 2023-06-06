@@ -25,7 +25,7 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
   const sponsorDefaultValues = {
     name: data?.name || "",
     targetUrl: data?.targetUrl || "",
-    triggerUrls: data?.targetUrls || [],
+    triggerUrls: data?.triggerUrls || [],
     logo: null,
     deleteAttachment: false,
   };
