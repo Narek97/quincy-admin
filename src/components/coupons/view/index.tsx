@@ -15,7 +15,7 @@ import {
   GridSortItem,
   GridSortModel,
 } from "@mui/x-data-grid";
-import { ActionsRenderer, ImageRenderer } from "../renderer";
+import { ActionsRenderer } from "../renderer";
 
 interface ICouponsView {
   view: IView;
@@ -49,6 +49,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
                   row={params.row}
                   handleRefetch={handleRefetch}
                   title={view.title}
+                  fields={view.fields.form}
                 />
               );
             },

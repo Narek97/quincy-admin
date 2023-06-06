@@ -6,12 +6,14 @@ import { useDeleteItem } from "../../../hooks/useCoupons";
 import DeleteModal from "../../templates/deleteModal/DeleteModal";
 import "./style.scss";
 import { GridCellParams } from "@mui/x-data-grid/models";
+import { couponsFormRendererMap } from "../../../pages/coupons/constants";
 
 interface IActionsRenderer {
   id: string;
   row: any;
   handleRefetch: () => void;
   title: string;
+  fields: any;
 }
 
 export const ImageRenderer = (params: GridCellParams) => {
@@ -24,6 +26,7 @@ export const ActionsRenderer: FC<IActionsRenderer> = ({
   row,
   handleRefetch,
   title,
+  fields
 }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -51,11 +54,13 @@ export const ActionsRenderer: FC<IActionsRenderer> = ({
       await deleteMutation.mutateAsync({ id, title });
 
       handleDeleteModalClose();
-      // onRefreshCB && onRefreshCB();
+      handleRefetch && handleRefetch();
     } catch (error) {
       console.error(error);
     }
   };
+
+  const FormRenderer = couponsFormRendererMap[title];
   return (
     <>
       <div className="actions-cell">
@@ -65,7 +70,7 @@ export const ActionsRenderer: FC<IActionsRenderer> = ({
           onClick={handleDeleteModalOpen}
           color="error"
         />
-        <BaseButton name="Edit" />
+        <BaseButton name="Edit" onClick={handleEditModalOpen} />
       </div>
       {isDeleteModalOpen && (
         <BaseModal
@@ -77,6 +82,21 @@ export const ActionsRenderer: FC<IActionsRenderer> = ({
             loading={false}
             onHandleDelete={() => handleDelete(id, title)}
             onHandleClose={handleDeleteModalClose}
+          />
+        </BaseModal>
+      )}
+       {isEditModalOpen && (
+        <BaseModal
+          loading={false}
+          open={isEditModalOpen}
+          handleClose={handleEditModalClose}
+        >
+          <FormRenderer
+            fields={fields}
+            onClose={handleEditModalClose}
+            onRefresh={handleRefetch}
+            title={title}
+            data={row}
           />
         </BaseModal>
       )}
