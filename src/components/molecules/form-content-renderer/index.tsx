@@ -4,12 +4,33 @@ import BaseLoadingButton from "../../atoms/buttons/BaseLoadingButton";
 import FormInputError from "../formInputError/FormInputError";
 import CustomChipsInput from "../multiple-input";
 import ImageUpload from "../image-upload";
-import './style.scss';
+import "./style.scss";
+import { FC } from "react";
 
-const FormContentRenderer = ({ onSubmit, fields, control, errors, isEdit }) => {
+interface IFormContentRenderer {
+  onSubmit: any;
+  fields: any;
+  control: any;
+  errors: any;
+  isEdit: boolean;
+  onClose: any;
+  handleSubmit: any;
+  isLoading: boolean;
+}
+
+const FormContentRenderer: FC<IFormContentRenderer> = ({
+  onSubmit,
+  fields,
+  control,
+  errors,
+  isEdit,
+  onClose,
+  handleSubmit,
+  isLoading,
+}) => {
   return (
     <div>
-      <form onSubmit={onSubmit} className="form-section">
+      <form onSubmit={handleSubmit(onSubmit)} className="form-section">
         <h1>Create Sponsor</h1>
         {fields.map((field, id) => (
           <Controller
@@ -47,17 +68,15 @@ const FormContentRenderer = ({ onSubmit, fields, control, errors, isEdit }) => {
 
         <div className="form-footer">
           <BaseButton
-            name={"Close"}
-            type={"submit"}
-            //   onClick={onHandleClose}
-            //   disabled={loading}
+            name="Close"
+            onClick={onClose}
+            disabled={isLoading}
             variant={"outlined"}
           />
           <BaseLoadingButton
             name={isEdit ? "Update" : "Create"}
-            type={"submit"}
-            //   loading={isLoading}
-            //   onClick={onHandleSubmit}
+            type="submit"
+            loading={isLoading}
           />
         </div>
       </form>

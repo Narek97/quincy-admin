@@ -1,3 +1,4 @@
+import { title } from "process";
 import { request } from "../utils/axios-rq";
 import { useMutation, useQuery } from "react-query";
 
@@ -25,12 +26,8 @@ export const deleteBrandRequest = (id: string) => {
   return request({ url: `brand/${id}`, method: "delete" });
 };
 
-export const createCouponRequest = (data: any) => {
-  return request({ url: `coupon/`, method: "post" });
-};
-
-export const createBrandRequest = (data: any) => {
-  return request({ url: `brand/`, method: "post" });
+export const createItemRequest = ({data, title}: any) => {
+  return request({ url: `${title}/`, method: "post", data});
 };
 
 export const useDeleteCoupon = (
@@ -73,14 +70,8 @@ export const useGetList = (data: {
 };
 
 
-export const useCreateCoupon = (onSuccess: (data: any) => void) => {
-  return useMutation(createCouponRequest, {
-    onSuccess,
-  });
-};
-
-export const useCreateBrand = (onSuccess: (data: any) => void) => {
-  return useMutation(createBrandRequest, {
+export const useCreateItem = (onSuccess: (data: any) => void) => {
+  return useMutation(createItemRequest, {
     onSuccess,
   });
 };

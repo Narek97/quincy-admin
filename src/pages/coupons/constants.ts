@@ -3,19 +3,29 @@ import SponsorFormRenderer from "../../components/coupons/form/sponsor";
 
 export const brandView = {
   title: "brand",
-  name: "Brands",
+  name: "brands",
   fields: {
     dashboard: [
-      { field: "sponsor", headerName: "Sponsor", width: 150},
-      { field: "targetUrl", headerName: "Target URL", width: 150},
-      { field: "triggerUrls", headerName: "Trigger URLs", width: 150},
-      { field: "logo", headerName: "Sponsor Logo", width: 150},
-      { field: "action", headerName: "Action", width: 150, sortable: false},
+      { field: "name", headerName: "Sponsor", flex: 1 },
+      {
+        field: "targetUrl",
+        headerName: "Target URL",
+        flex: 1,
+        sortable: false,
+      },
+      {
+        field: "triggerUrls",
+        headerName: "Trigger URLs",
+        flex: 1,
+        sortable: false,
+      },
+      { field: "logo", headerName: "Sponsor Logo", flex: 1, sortable: false },
+      { field: "action", headerName: "Action", flex: 1, sortable: false },
     ],
 
     form: [
       {
-        name: "sponsor",
+        name: "name",
         placeholder: "Sponsor",
         input: "text",
         required: true,
@@ -53,10 +63,15 @@ export const couponView = {
   name: "coupons",
   fields: {
     dashboard: [
-      { field: "name", headerName: "Sponsor", sortable: false, flex: 1,},
-      { field: "couponCode", headerName: "Coupon Code", sortable: false,  flex: 1,},
-      { field: "dealText", headerName: "Text", sortable: false, flex: 1,},
-      { field: "action", headerName: "Action",  sortable: false, flex: 1,},
+      { field: "name", headerName: "Sponsor", sortable: false, flex: 1 },
+      {
+        field: "couponCode",
+        headerName: "Coupon Code",
+        sortable: false,
+        flex: 1,
+      },
+      { field: "dealText", headerName: "Text", sortable: false, flex: 1 },
+      { field: "action", headerName: "Action", sortable: false, flex: 1 },
     ],
 
     form: [
@@ -95,8 +110,7 @@ export const couponsTabs = ["coupon", "brand"];
 
 export const COUPONS_LIMIT = 5;
 
-
 export const couponsFormRendererMap = {
   brand: SponsorFormRenderer,
   coupon: CouponFormRenderer,
-}
+};

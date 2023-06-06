@@ -4,11 +4,13 @@ import ActionsRenderer from "../renderer";
 import { useGetList } from "../../../hooks/useCoupons";
 import BaseSearch from "../../molecules/search/Search";
 import "./style.scss";
-import { COUPONS_LIMIT, couponsFormRendererMap } from "../../../pages/coupons/constants";
+import {
+  COUPONS_LIMIT,
+  couponsFormRendererMap,
+} from "../../../pages/coupons/constants";
 import CustomDataGrid from "../../organisms/CustomDataGrid";
 import SponsorFormRenderer from "../form/sponsor";
 import BaseModal from "../../atoms/modal/BaseModal";
-
 
 interface ICouponsView {
   view: any;
@@ -28,7 +30,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     sort: "desc",
   });
 
-  const [isCreatModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePageChange = (model: any) => {
     setPaginationModel(model);
@@ -40,15 +42,14 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
   };
 
   const handleSortChange = (ev: any) => {
-    if (!ev || !ev.length) {
+    if (!ev || !ev?.length) {
       setSortModel({
         field: "name",
         sort: "desc",
-      })
+      });
     } else {
       setSortModel(ev[0]);
     }
-   
   };
 
   const handleRefetch = () => {
@@ -60,20 +61,15 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     setOffSet(0);
   };
 
-  const createModalOpen = () => {
-    setIsCreateModalOpen(true);
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
   };
 
-  const createModalClose = () => {
-    setIsCreateModalOpen(false);
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
-  const {
-    data,
-    error,
-    isLoading,
-    refetch,
-  } = useGetList({
+  const { data, error, isLoading, refetch } = useGetList({
     offset,
     size: paginationModel.pageSize,
     search,
@@ -81,8 +77,6 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     dir: sortModel.sort,
     title: view.title,
   });
-
-
 
   const renderFunction = (tableRow: any) => (
     <ActionsRenderer
@@ -107,7 +101,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
         <BaseLoadingButton
           name={`Create ${view.title}`}
           loading={false}
-          onClick={createModalOpen}
+          onClick={handleModalOpen}
         />
       </div>
 
@@ -123,14 +117,20 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
           // renderFunction={renderFunction}
         />
       )}
-      {isCreatModalOpen &&  <BaseModal
+      {isModalOpen && (
+        <BaseModal
           loading={isLoading}
-          open={isCreatModalOpen}
-          handleClose={createModalClose}
+          open={isModalOpen}
+          handleClose={handleModalClose}
         >
-         <FormRenderer fields={view.fields.form}/>
-        </BaseModal>}
-   
+          <FormRenderer
+            fields={view.fields.form}
+            onClose={handleModalClose}
+            onRefresh={handleRefetch}
+            title={view.title}
+          />
+        </BaseModal>
+      )}
     </>
   );
 };

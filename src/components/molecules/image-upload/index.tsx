@@ -16,7 +16,7 @@ const ImageUpload = ({ onChangeCB, value }) => {
       setImagePreview("");
     }
 
-    onChangeCB && onChangeCB();
+    onChangeCB && onChangeCB(file);
   };
   return (
     <>
