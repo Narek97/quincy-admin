@@ -1,0 +1,15 @@
+.form-section {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   h1{
+    font-size: 25px;
+    font-weight: 600;
+   }
+   .form-footer {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    gap: 10px;
+   }
+}

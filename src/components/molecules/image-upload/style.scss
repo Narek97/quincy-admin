@@ -1,0 +1,27 @@
+.image-upload {
+    display: flex;
+    border: .1rem rgb(206, 202, 202) solid;
+    gap: 10px;
+    .image {
+      width: 60px;
+      height: 60px;
+    }
+  
+    .upload {
+        &:before {
+            content: "Upload Logo"; 
+          }
+    }
+
+    input[type="file"] {
+        &::-webkit-file-upload-button {
+            height: 40px;
+            width: 100%;
+        }
+        &::-webkit-file-upload-button + .upload::after {
+            content: none; /* Hide the "No file chosen" text */
+            display: none;
+          }
+        
+    }
+  }
