@@ -59,6 +59,9 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
       });
       return newFields;
     });
+    return ()=>{
+      console.log('nowww');
+    }
   }, []);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -103,7 +106,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
   const { data, error, isLoading, refetch } = useGetList({
     offset,
     size: paginationModel.pageSize,
-    search,
+    q: search,
     sort: sortModel.field,
     dir: sortModel.sort,
     title: view.title,
@@ -118,7 +121,7 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
   return (
     <>
       <div className="coupons--header">
-        {!!data?.count && <BaseSearch onHandleSearch={handleSearch} />}
+        <BaseSearch onHandleSearch={handleSearch} />
 
         <BaseLoadingButton
           name={`Create ${view.title}`}

@@ -16,8 +16,8 @@ interface ICutomGrid {
 }
 
 const CustomDataGrid: FC<ICutomGrid> = ({
-  columns,
-  rows,
+  columns =[],
+  rows = [],
   rowCount,
   paginationModel,
   handlePageChange,
