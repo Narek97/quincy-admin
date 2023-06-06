@@ -6,7 +6,7 @@ import CustomChipsInput from "../multiple-input";
 import ImageUpload from "../image-upload";
 import "./style.scss";
 import { FC } from "react";
-import { IBrandCreate, IFormField } from "../../../ts/interface";
+import { IFormField } from "../../../ts/interface";
 
 interface IFormContentRenderer {
   onSubmit: (data: unknown) => void;

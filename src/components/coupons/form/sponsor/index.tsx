@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { useCreateItem } from "../../../../hooks/useCoupons";
-import { createSponsorDefaultValues } from "./constants";
+import { useCreateItem, useUpdateItem } from "../../../../hooks/useCoupons";
 import { useForm } from "react-hook-form";
 import FormContentRenderer from "../../../molecules/form-content-renderer";
 import { IBrand, IFormField } from "../../../../ts/interface";
@@ -21,6 +20,8 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
   onRefresh,
 }) => {
   const isEdit = !!data;
+  console.log('dataaa', data);
+
 
   const sponsorDefaultValues = {
     name: data?.name || "",
@@ -35,13 +36,18 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
     onRefresh();
   };
 
-  const { mutate, isLoading } = useCreateItem(onSuccess);
+  const { mutate: createMutate, isLoading: createIsLoading } = useCreateItem(onSuccess);
+  const { mutate: editMutate, isLoading: editIsLoading } = useUpdateItem(onSuccess);
+
+  const isLoading = createIsLoading || editIsLoading;
+
+
 
   const state = useForm({
     mode: "onSubmit",
     defaultValues: sponsorDefaultValues,
     // resolver: yupResolver(createServiceSchema),
-  });
+  });  
 
   const {
     handleSubmit,
@@ -49,16 +55,21 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
     formState: { errors },
   } = state;
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (couponData: any) => {
     const formData = new FormData();
-    for (const key in data) {
+    for (const key in couponData) {
       if (key === "triggerUrls") {
-        formData.append(key, JSON.stringify(data[key]));
+        formData.append(key, JSON.stringify(couponData[key]));
       } else {
-        formData.append(key, data[key]);
+        formData.append(key, couponData[key]);
       }
     }
-    mutate({ data: formData, title });
+    if (isEdit) {
+      editMutate({ data: formData, title, id: data.id })
+    } else {
+      createMutate({ data: formData, title });
+    }
+    
   };
 
   return (
@@ -77,3 +88,4 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
 };
 
 export default SponsorFormRenderer;
+

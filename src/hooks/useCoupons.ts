@@ -34,6 +34,11 @@ export const createItemRequest = ({data, title}: any) => {
   return request({ url: `${title}/`, method: "post", data});
 };
 
+
+export const updateItemRequest = ({data, title, id}: any) => {  
+  return request({ url: `${title}/${id}`, method: "put", data});
+};
+
 export const useDeleteItem = (
   onSuccess: () => void,
 ) => {
@@ -68,3 +73,11 @@ export const useCreateItem = (onSuccess: (data: any) => void) => {
     onSuccess,
   });
 };
+
+
+export const useUpdateItem = (onSuccess: (data: any) => void) => {
+  return useMutation(updateItemRequest, {
+    onSuccess,
+  });
+};
+
