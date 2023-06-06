@@ -5,10 +5,11 @@ import "./style.scss";
 interface IImageUpload{
   onChangeCB: (...event: unknown[]) => void;
   value: any;
+  imgUrl?: string;
 }
 
-const ImageUpload: FC<IImageUpload> = ({ onChangeCB, value }) => {
-  const [imagePreview, setImagePreview] = useState("");
+const ImageUpload: FC<IImageUpload> = ({ onChangeCB, value, imgUrl }) => {
+  const [imagePreview, setImagePreview] = useState(imgUrl);
 
   const handleChange = (event: any) => {
     const file = event.target.files[0];

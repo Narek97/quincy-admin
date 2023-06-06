@@ -17,6 +17,7 @@ interface IFormContentRenderer {
   onClose: ()=> {};
   handleSubmit: UseFormHandleSubmit<any, undefined>;
   isLoading: boolean;
+  imgUrl?: string;
 }
 
 const FormContentRenderer: FC<IFormContentRenderer> = ({
@@ -28,6 +29,7 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
   onClose,
   handleSubmit,
   isLoading,
+  imgUrl
 }) => {
   return (
     <div>
@@ -60,7 +62,7 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
                 );
               }
               if (field.input === "image") {
-                return <ImageUpload onChangeCB={onChange} value={value} />;
+                return <ImageUpload onChangeCB={onChange} value={value} imgUrl ={imgUrl}/>;
               }
               return <></>;
             }}
