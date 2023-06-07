@@ -3,6 +3,8 @@ import { IFormField } from "../../../../ts/interface";
 import { useCreateItem, useUpdateItem } from "../../../../hooks/useCoupons";
 import { useForm } from "react-hook-form";
 import FormContentRenderer from "../../../molecules/form-content-renderer";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { couponSchema } from "./constants";
 
 interface ICouponFormRenderer {
   fields: IFormField[];
@@ -42,7 +44,7 @@ const CouponFormRenderer: FC<ICouponFormRenderer> = ({
   const state = useForm({
     mode: "onSubmit",
     defaultValues: couponDefaultValues,
-    // resolver: yupResolver(editSponsorSchema),
+    resolver: yupResolver(couponSchema),
   });
 
   const {
