@@ -83,6 +83,7 @@ const SponsorFormRenderer: FC<IBrandFormRenderer> = ({
       fields={fields}
       onClose={onClose}
       isLoading={isLoading}
+      title={title}
       imgUrl={data?.logo?.low}
     />
   );

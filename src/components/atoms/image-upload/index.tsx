@@ -3,13 +3,13 @@ import "./style.scss";
 import ErrorMessage from "../../atoms/errorMessage/ErrorMessage";
 
 
-interface IImageUpload{
+interface ICustomImageUpload{
   onChangeCB: (...event: unknown[]) => void;
   imgUrl?: string;
   message: string;
 }
 
-const ImageUpload: FC<IImageUpload> = ({ onChangeCB, imgUrl, message }) => {
+const CustomImageUpload: FC<ICustomImageUpload> = ({ onChangeCB, imgUrl, message }) => {
   const [imagePreview, setImagePreview] = useState(imgUrl);
 
   const handleChange = (event: any) => {
@@ -46,4 +46,4 @@ const ImageUpload: FC<IImageUpload> = ({ onChangeCB, imgUrl, message }) => {
   );
 };
 
-export default ImageUpload;
+export default CustomImageUpload;

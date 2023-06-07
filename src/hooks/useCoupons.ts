@@ -3,19 +3,19 @@ import { useMutation, useQuery } from "react-query";
 import { GridSortDirection } from "@mui/x-data-grid/models";
 
 const getListRequest = ({
-  size = 10,
-  offset = 0,
+  size,
+  offset,
   q = "",
-  sort = "",
-  dir = "asc",
-  title ='',
-}:{
-  size: number,
-  offset: number,
-  q: string,
-  sort: string,
-  dir: GridSortDirection,
-  title: string
+  sort,
+  dir,
+  title = "",
+}: {
+  size?: number;
+  offset?: number;
+  q?: string;
+  sort?: string;
+  dir: GridSortDirection;
+  title: string;
 }) => {
   return request({
     url: `${title}/`,
@@ -24,49 +24,51 @@ const getListRequest = ({
   });
 };
 
-
-export const deleteItemRequest = ({id, title}: {id: string, title: string}) => {
+export const deleteItemRequest = ({
+  id,
+  title,
+}: {
+  id: string;
+  title: string;
+}) => {
   return request({ url: `${title}/${id}`, method: "delete" });
 };
 
-
-export const createItemRequest = ({data, title}: any) => {
-  return request({ url: `${title}/`, method: "post", data});
+export const createItemRequest = ({ data, title }: any) => {
+  return request({ url: `${title}/`, method: "post", data });
 };
 
-
-export const updateItemRequest = ({data, title, id}: any) => {  
-  return request({ url: `${title}/${id}`, method: "put", data});
+export const updateItemRequest = ({ data, title, id }: any) => {
+  return request({ url: `${title}/${id}`, method: "put", data });
 };
 
-export const useDeleteItem = (
-  onSuccess: () => void,
-) => {
-  return useMutation( deleteItemRequest, {
+export const useDeleteItem = (onSuccess: () => void) => {
+  return useMutation(deleteItemRequest, {
     onSuccess,
   });
 };
 
-
 export const useGetList = (data: {
-  size: number;
-  offset: number;
-  q: string;
-  sort: string;
-  dir: GridSortDirection;
+  size?: number;
+  offset?: number;
+  q?: string;
+  sort?: string;
+  dir?: GridSortDirection;
   title: string;
+  enabled?: boolean;
+  open?: boolean;
 }) => {
-  const { size, offset, q, sort, dir, title } = data;
+  const { size, offset, q, sort, dir, title, enabled = true, open } = data;
   return useQuery<any, Error>(
-    [`get${title}`, size, offset, q, sort, dir, title],
+    [`get${title}`, size, offset, q, sort, dir, title, open],
     () => getListRequest({ size, offset, q, sort, dir, title }),
     {
       retry: 0,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
-
 
 export const useCreateItem = (onSuccess: (data: any) => void) => {
   return useMutation(createItemRequest, {
@@ -74,10 +76,8 @@ export const useCreateItem = (onSuccess: (data: any) => void) => {
   });
 };
 
-
 export const useUpdateItem = (onSuccess: (data: any) => void) => {
   return useMutation(updateItemRequest, {
     onSuccess,
   });
 };
-

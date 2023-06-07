@@ -7,13 +7,15 @@ import {
 import BaseButton from "../../atoms/buttons/BaseButton";
 import BaseLoadingButton from "../../atoms/buttons/BaseLoadingButton";
 import FormInputError from "../formInputError/FormInputError";
-import CustomChipsInput from "../multiple-input";
-import ImageUpload from "../image-upload";
 import "./style.scss";
 import { FC } from "react";
 import { IFormField } from "../../../ts/interface";
+import CustomChipsInput from "../../atoms/multiple-input";
+import CustomImageUpload from "../../atoms/image-upload";
+import CustomSelectAsync from "../../atoms/select-async";
 
 interface IFormContentRenderer {
+  title: string;
   onSubmit: (data: unknown) => void;
   fields: IFormField[];
   control: Control<any, unknown>;
@@ -26,6 +28,7 @@ interface IFormContentRenderer {
 }
 
 const FormContentRenderer: FC<IFormContentRenderer> = ({
+  title,
   onSubmit,
   fields,
   control,
@@ -39,14 +42,13 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="form-section">
-        <h1>Create Sponsor</h1>
+        <h1>Create {title}</h1>
         {fields.map((field, id) => (
           <Controller
             key={field.name}
             name={field.name}
             control={control}
             render={({ field: { onChange, value } }) => {
-              console.log(field.name);
               if (field.input === "text" && !field.multiChoice) {
                 return (
                   <FormInputError
@@ -76,13 +78,24 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
               }
               if (field.input === "image") {
                 return (
-                  <ImageUpload
+                  <CustomImageUpload
                     onChangeCB={onChange}
                     imgUrl={imgUrl}
                     message={
                       (errors?.[field.name]?.message as string | undefined) ||
                       ""
                     }
+                  />
+                );
+              }
+              if (field.input === "select" && field.async) {
+                return (
+                  <CustomSelectAsync
+                    label={field.placeholder}
+                    title={field.asyncGet!}
+                    nameKey={field.nameKey!}
+                    onChangeCB={onChange}
+                    value={value}
                   />
                 );
               }

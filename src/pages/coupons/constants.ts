@@ -2,15 +2,12 @@ import { FC } from "react";
 import CouponFormRenderer from "../../components/coupons/form/coupon";
 import SponsorFormRenderer from "../../components/coupons/form/sponsor";
 import { IView } from "../../ts/interface";
-import { GridCellParams } from "@mui/x-data-grid";
-import {
-  ActionsRenderer,
-  ImageRenderer,
-} from "../../components/coupons/renderer";
+import { ImageRenderer } from "../../components/coupons/renderer";
 
 export const brandView: IView = {
   title: "brand",
   name: "brands",
+  request: "brand",
   fields: {
     dashboard: [
       { field: "name", headerName: "Sponsor", flex: 1 },
@@ -79,9 +76,16 @@ export const brandView: IView = {
 export const couponView: IView = {
   title: "coupon",
   name: "coupons",
+  request: "coupon",
   fields: {
     dashboard: [
-      { field: "name", headerName: "Sponsor", sortable: false, flex: 1 },
+      {
+        field: "name",
+        headerName: "Sponsor",
+        sortable: false,
+        flex: 1,
+        valueGetter: (params: any) =>  params.row.brand.name},
+     
       {
         field: "couponCode",
         headerName: "Coupon Code",
@@ -94,12 +98,14 @@ export const couponView: IView = {
 
     form: [
       {
-        name: "name",
+        name: "brandId",
         placeholder: "Deal Sponsor",
         input: "select",
         required: true,
         multiChoice: false,
         async: true,
+        asyncGet: "brand",
+        nameKey: "brands",
       },
       {
         name: "couponCode",

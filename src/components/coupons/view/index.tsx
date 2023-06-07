@@ -22,19 +22,21 @@ interface ICouponsView {
 }
 
 const CouponsView: FC<ICouponsView> = ({ view }) => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   const [formFields, setFormFields] = useState(view.fields.dashboard);
   const [offset, setOffSet] = useState(0);
   const [search, setSearch] = useState("");
-
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: COUPONS_LIMIT,
   });
-
   const [sortModel, setSortModel] = useState<GridSortItem>({
     field: "name",
     sort: "desc",
   });
+
+
 
   useEffect(() => {
     setFormFields((prevFields) => {
@@ -59,12 +61,9 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
       });
       return newFields;
     });
-    return ()=>{
-      console.log('nowww');
-    }
   }, []);
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
 
   const handlePageChange = (model: GridPaginationModel) => {
     setPaginationModel(model);
@@ -112,11 +111,12 @@ const CouponsView: FC<ICouponsView> = ({ view }) => {
     title: view.title,
   });
 
-  const FormRenderer = couponsFormRendererMap[view.title];
 
   if (error) {
     return <div>{error.message}</div>;
   }
+
+  const FormRenderer = couponsFormRendererMap[view.title];
 
   return (
     <>

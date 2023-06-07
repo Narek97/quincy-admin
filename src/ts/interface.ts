@@ -61,12 +61,15 @@ export interface IFormField {
   required: boolean,
   multiChoice: boolean,
   async?: boolean,
+  asyncGet?: string
+  nameKey?: string
 }
 
 
 export interface IView {
   title: string,
   name: string,
+  request: string,
   fields: {
     dashboard: GridColDef[],
     form: IFormField[],
