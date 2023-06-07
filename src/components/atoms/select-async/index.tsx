@@ -17,8 +17,9 @@ const CustomSelectAsync: FC<ICustomSelectAsync> = ({
   title,
   value,
   onChangeCB,
-  nameKey
+  nameKey,
 }) => {
+//   const [innerValue, setInnerValue] = useState();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<any[]>([]);
   const loading = open && options.length === 0;
@@ -44,15 +45,14 @@ const CustomSelectAsync: FC<ICustomSelectAsync> = ({
   }, [open]);
 
   const handleChange = (_: any, value: any) => {
-    onChangeCB(value.id);
+    onChangeCB(value);
   };
-
-  console.log('valueeee', value);
 
   return (
     <Autocomplete
       id="asynchronous-demo"
       open={open}
+      value={value}
       onOpen={() => {
         setOpen(true);
       }}
@@ -60,27 +60,31 @@ const CustomSelectAsync: FC<ICustomSelectAsync> = ({
         setOpen(false);
       }}
       onChange={handleChange}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
+      isOptionEqualToValue={(option, value) => {
+        return option.id === value.id;
+      }}
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder={label}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {loading ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
-          }}
-        />
-      )}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            placeholder={label}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            }}
+          />
+        );
+      }}
     />
   );
 };

@@ -98,7 +98,7 @@ export const couponView: IView = {
 
     form: [
       {
-        name: "brandId",
+        name: "brand",
         placeholder: "Deal Sponsor",
         input: "select",
         required: true,

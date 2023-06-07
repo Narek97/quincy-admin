@@ -43,7 +43,7 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="form-section">
         <h1>Create {title}</h1>
-        {fields.map((field, id) => (
+        {fields.map((field) => (
           <Controller
             key={field.name}
             name={field.name}

@@ -22,7 +22,7 @@ const CouponFormRenderer: FC<ICouponFormRenderer> = ({
   const isEdit = !!data;
 
   const couponDefaultValues = {
-    brandId: data?.brandId || "",
+    brand: data?.brand || null,
     couponCode: data?.couponCode || "",
     dealText: data?.dealText || "",
   };
@@ -49,18 +49,19 @@ const CouponFormRenderer: FC<ICouponFormRenderer> = ({
     handleSubmit,
     control,
     formState: { errors },
-    watch,
   } = state;
 
   const onSubmit = (couponData: any) => {
+    const requestData = {...couponData};
+    requestData.brandId = couponData.brand.id;
+    delete requestData.brand;
     if (isEdit) {
-      editMutate({ data: couponData, title, id: data.id });
+      editMutate({ data: requestData, title, id: data.id });
     } else {
-      createMutate({ data: couponData, title });
+      createMutate({ data: requestData, title });
     }
   };
 
-  console.log('watchhhh', watch());
   return (
     <FormContentRenderer
       handleSubmit={handleSubmit}
