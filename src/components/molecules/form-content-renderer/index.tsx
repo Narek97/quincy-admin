@@ -10,9 +10,9 @@ import FormInputError from "../formInputError/FormInputError";
 import "./style.scss";
 import { FC } from "react";
 import { IFormField } from "../../../ts/interface";
-import CustomChipsInput from "../../atoms/multiple-input";
-import CustomImageUpload from "../../atoms/image-upload";
-import CustomSelectAsync from "../../atoms/select-async";
+import CustomImageUpload from "../image-upload";
+import CustomChipsInput from "../multiple-input";
+import CustomSelectAsync from "../select-async";
 
 interface IFormContentRenderer {
   title: string;
@@ -96,6 +96,10 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
                     nameKey={field.nameKey!}
                     onChangeCB={onChange}
                     value={value}
+                    message={
+                      (errors?.[field.name]?.message as string | undefined) ||
+                      ""
+                    }
                   />
                 );
               }

@@ -18,7 +18,7 @@ const DeleteModal: FC<IDeleteModal> = ({
 }) => {
   return (
     <div className={"delete-modal-content"}>
-      <p>{`Are you sure to delete this ${name}`}</p>
+      <p>{`Are you sure to delete this ${name}?`}</p>
       <div className={"delete-modal-content--footer"}>
         <BaseButton
           name={"Close"}
