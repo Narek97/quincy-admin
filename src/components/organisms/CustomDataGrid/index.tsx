@@ -39,6 +39,7 @@ const CustomDataGrid: FC<ICutomGrid> = ({
         loading={isLoading}
         disableRowSelectionOnClick
         rowHeight={50}
+        pageSizeOptions={[5]}
       />
     </Box>
   );

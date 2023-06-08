@@ -6,17 +6,12 @@
       width: 60px;
       height: 60px;
     }
-
-
-    input[type="file"] {
-        &::-webkit-file-upload-button {
-            height: 40px;
-            width: 100%;
-        }
-        &::-webkit-file-upload-button + .upload::after {
-            content: none; /* Hide the "No file chosen" text */
-            display: none;
-          }
-        
+    input {
+      display: none;
+    }
+    label {
+      padding: 10px;
+      cursor: pointer;
+      font-weight: 500;
     }
   }

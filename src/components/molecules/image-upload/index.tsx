@@ -24,7 +24,7 @@ const CustomImageUpload: FC<ICustomImageUpload> = ({ onChangeCB, imgUrl, message
       setImagePreview("");
     }
 
-    onChangeCB && onChangeCB(file);
+    onChangeCB(file);
   };
   return (
     <>
@@ -32,6 +32,7 @@ const CustomImageUpload: FC<ICustomImageUpload> = ({ onChangeCB, imgUrl, message
         {imagePreview && (
           <img src={imagePreview} alt="logo" className="image" />
         )}
+        <label htmlFor="imageUpload">Upload Logo</label>
         <input
           className="upload"
           type="file"
