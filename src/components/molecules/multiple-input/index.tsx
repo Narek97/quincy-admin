@@ -15,6 +15,7 @@ const CustomChipsInput: FC<ICustomChipsInput> = ({
   placeholder,
   message
 }) => {
+
   return (
     <>
       <MuiChipsInput

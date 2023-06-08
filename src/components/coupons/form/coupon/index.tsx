@@ -56,6 +56,7 @@ const CouponFormRenderer: FC<ICouponFormRenderer> = ({
   const onSubmit = (couponData: any) => {
     const requestData = {...couponData};
     requestData.brandId = couponData.brand.id;
+
     delete requestData.brand;
     if (isEdit) {
       editMutate({ data: requestData, title, id: data.id });

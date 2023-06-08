@@ -27,6 +27,10 @@ interface IFormContentRenderer {
   imgUrl?: string;
 }
 
+const getAnyMessage = (arr: any[]) => {
+  return arr.find((elem) => elem.message);
+};
+
 const FormContentRenderer: FC<IFormContentRenderer> = ({
   title,
   onSubmit,
@@ -64,15 +68,19 @@ const FormContentRenderer: FC<IFormContentRenderer> = ({
                 );
               }
               if (field.input === "text" && field.multiChoice) {
+                let message;
+                if (errors?.[field.name]) {
+                  const error = (message = getAnyMessage(
+                    errors[field.name] as unknown as any[]
+                  ));
+                  message = error.message;
+                }
                 return (
                   <CustomChipsInput
                     onChange={onChange}
                     value={value}
                     placeholder={field.placeholder}
-                    message={
-                      (errors?.[field.name]?.message as string | undefined) ||
-                      ""
-                    }
+                    message={(message as string | undefined) || ""}
                   />
                 );
               }
