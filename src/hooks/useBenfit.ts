@@ -43,8 +43,8 @@ export const useGetBenefits = (data: {
   );
 };
 
-const updateBenefitRequest = (data: BenefitRequestType) => {
-  return request({ url: `benefit/${data.id}`, method: "put", data });
+const updateBenefitRequest = ({data, id}:{data: any, id: string}) => {
+  return request({ url: `benefit/${id}`, method: "put", data });
 };
 
 export const useUpdateBenefit = (

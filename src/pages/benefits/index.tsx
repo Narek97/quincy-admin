@@ -51,7 +51,7 @@ const Benefits = () => {
         return benefit;
       })
     );
-    setIsOpenDeleteBenefitModal(false);
+    setIsOpenCreateBenefitModal(false);
   };
 
   const onDeleteSuccess = (data: BenefitResponseType) => {
@@ -175,6 +175,8 @@ const Benefits = () => {
       setAllCount(data.count);
     }
   }, [data]);
+
+  console.log('errors', error);
 
   if (error) {
     return <div className={"response-error-message"}>{error.message}</div>;

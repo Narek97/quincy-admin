@@ -33,6 +33,7 @@ const CreateOrEditBenefitModalContent: FC<ICreateOrEditBenefitModalContent> = ({
   });
 
   const onHandleSubmit = handleSubmit((benefitFormData: BenefitRequestType) => {
+    // TODO
     if (file) {
       const formData = new FormData();
       formData.append("attachment", file);
@@ -42,8 +43,9 @@ const CreateOrEditBenefitModalContent: FC<ICreateOrEditBenefitModalContent> = ({
         benefitFormData.id = selectedBenefit.id;
       }
 
-      mutate(formData);
+      mutate({data: formData, id: selectedBenefit?.id});
     } else {
+      mutate({data: benefitFormData, id: selectedBenefit?.id});
     }
   });
 
