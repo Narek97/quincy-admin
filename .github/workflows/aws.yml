@@ -1,0 +1,34 @@
+name: Deploy to Amazon ECS
+
+env:
+  AWS_REGION: us-east-2
+
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_STAGE }}
+          username: ${{ secrets.USERNAME_STAGE }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ~/app/quincy-backoffice-v2 
+            git checkout develop
+            git pull origin develop
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            yarn
+            yarn run build
+            cd ..
+            pm2 restart ecosystem.config.js --env development
+
